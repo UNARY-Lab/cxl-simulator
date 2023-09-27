@@ -1,2 +1,4 @@
 packer
 *.swp
+m5out
+x86-ubuntu-image/
