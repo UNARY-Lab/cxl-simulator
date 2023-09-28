@@ -53,7 +53,7 @@
     [
         {
             "type": "file",
-            "source": "x86-ubuntu/build/test",
+            "source": "x86-ubuntu/experiments",
             "destination": "/home/gem5/"
         },
         {

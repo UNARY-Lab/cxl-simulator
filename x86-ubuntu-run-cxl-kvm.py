@@ -117,7 +117,7 @@ board = X86Board(
 command = (
     "m5 exit;"
     + "echo 'This is running on Timing CPU cores.';"
-    + "/home/gem5/test;"
+    + "/home/gem5/experiments/test;"
     + "sleep 1;"
     + "m5 exit;"
 )

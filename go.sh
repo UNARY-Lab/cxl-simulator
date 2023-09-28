@@ -33,7 +33,8 @@ all() {
   run
 }
 
-if [[ -z $1 ]]; then
+if [[ -z $1 ]]
+then
     all
 else
     $@
