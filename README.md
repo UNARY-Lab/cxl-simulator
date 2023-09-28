@@ -1,4 +1,4 @@
-# CXL Experiemnts
+# CXL Experiments
 
 ## Current State
 
