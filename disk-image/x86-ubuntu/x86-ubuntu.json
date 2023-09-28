@@ -53,6 +53,11 @@
     [
         {
             "type": "file",
+            "source": "x86-ubuntu/build/test",
+            "destination": "/home/gem5/"
+        },
+        {
+            "type": "file",
             "source": "x86-ubuntu/exit.sh",
             "destination": "/home/gem5/"
         },
