@@ -1,6 +1,6 @@
 # CXL Experiemnts
 
-## Current State:
+## Current State
 
 This repo does nothing useful yet, it is a WIP
 
