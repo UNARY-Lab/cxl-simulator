@@ -40,13 +40,9 @@ scons build/X86/gem5.opt -j`nproc`
 
 from gem5.utils.requires import requires
 from gem5.components.boards.x86_board import X86Board
-from gem5.components.cachehierarchies.ruby.mesi_two_level_cache_hierarchy import (
-    MESITwoLevelCacheHierarchy,
-)
+from gem5.components.cachehierarchies.ruby.mesi_two_level_cache_hierarchy import MESITwoLevelCacheHierarchy
 from gem5.components.memory.single_channel import SingleChannelDDR4_2400
-from gem5.components.processors.simple_switchable_processor import (
-    SimpleSwitchableProcessor,
-)
+from gem5.components.processors.simple_processor import SimpleProcessor
 from gem5.components.processors.cpu_types import CPUTypes
 from gem5.isas import ISA
 from gem5.coherence_protocol import CoherenceProtocol
@@ -79,22 +75,11 @@ cache_hierarchy = MESITwoLevelCacheHierarchy(
 # Main memory
 memory = SingleChannelDDR4_2400(size="3GiB")
 
-# This is a switchable CPU. We first boot Ubuntu using KVM, then the guest
-# will exit the simulation by calling "m5 exit" (see the `command` variable
-# below, which contains the command to be run in the guest after booting).
-# Upon exiting from the simulation, the Exit Event handler will switch the
-# CPU type (see the ExitEvent.EXIT line below, which contains a map to
-# a function to be called when an exit event happens).
-processor = SimpleSwitchableProcessor(
-    starting_core_type=CPUTypes.KVM,
-    switch_core_type=CPUTypes.TIMING,
+processor = SimpleProcessor(
+    cpu_type=CPUTypes.KVM,
     isa=ISA.X86,
     num_cores=2,
 )
-
-# Here we tell the KVM CPU (the starting CPU) not to use perf.
-for proc in processor.start:
-    proc.core.usePerf = False
 
 # Here we setup the board. The X86Board allows for Full-System X86 simulations.
 board = X86Board(
@@ -115,10 +100,9 @@ board = X86Board(
 # has ended you may inspect `m5out/system.pc.com_1.device` to see the echo
 # output.
 command = (
-    "m5 exit;"
-    + "echo 'This is running on Timing CPU cores.';"
-    + "/home/gem5/experiments/test;"
-    + "sleep 1;"
+    "/home/gem5/experiments/test;"
+    + "echo 3 > /proc/sys/vm/drop_caches;"
+    + "sync;"
     + "m5 exit;"
 )
 
@@ -129,14 +113,5 @@ board.set_kernel_disk_workload(
 )
 
 
-simulator = Simulator(
-    board=board,
-    on_exit_event={
-        # Here we want override the default behavior for the first m5 exit
-        # exit event. Instead of exiting the simulator, we just want to
-        # switch the processor. The 2nd m5 exit after will revert to using
-        # default behavior where the simulator run will exit.
-        ExitEvent.EXIT: (func() for func in [processor.switch])
-    },
-)
+simulator = Simulator(board=board)
 simulator.run()
