@@ -22,7 +22,15 @@ build_disk() {
 }
 
 run() {
-  docker run --privileged --rm -itv $BASE:/mnt -w /mnt $CONTAINER gem5/build/X86/gem5.opt x86-ubuntu-run-cxl-kvm.py
+  NAME=gem5cxl
+  CMD="/mnt/gem5/util/term/m5term localhost 3456"
+  docker run --privileged --rm -itv $BASE:/mnt -w /mnt $CONTAINER bash -c "
+  tmux kill-session -t $NAME;
+  tmux new-session -d -s $NAME;
+  tmux split-window -h -t $NAME:0.0;
+  tmux send-keys -t $NAME:0.0 \"/mnt/gem5/build/X86/gem5.opt --debug-flags CxlMemory x86-ubuntu-run-cxl-kvm.py\" Enter;
+  tmux send-keys -t $NAME:0.1 \"while true; do $CMD; sleep 1; done\" Enter;
+  tmux attach-session -t $NAME;"
 }
 
 all() {

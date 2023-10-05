@@ -15,9 +15,8 @@ mv /home/gem5/m5 /sbin
 ln -s /sbin/m5 /sbin/gem5
 
 mv /home/gem5/exit.sh /root/
-mv /home/gem5/gem5_init.sh /root/
-
-# Add init script to bashrc
-echo "/root/gem5_init.sh" >> /root/.bashrc
+[[ -d /etc/init/ ]] || mkdir /etc/init/
+mv /home/gem5/tty-gem5.conf /etc/init/
+mv /home/gem5/hosts /etc/
 
 echo 'Post Installation Done'

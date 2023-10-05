@@ -99,17 +99,16 @@ board = X86Board(
 # then, again, call `m5 exit` to terminate the simulation. After simulation
 # has ended you may inspect `m5out/system.pc.com_1.device` to see the echo
 # output.
-command = (
-    "/home/gem5/experiments/test;"
-    + "echo 3 > /proc/sys/vm/drop_caches;"
-    + "sync;"
-    + "m5 exit;"
-)
+#command = (
+#    "cat /etc/hosts;"
+#    + "sleep 2;"
+#    + "m5 exit;"
+#)
 
 board.set_kernel_disk_workload(
         kernel=obtain_resource("x86-linux-kernel-5.4.49", resource_directory="/mnt/cache/"),
         disk_image=DiskImageResource("/mnt/disk-image/x86-ubuntu/x86-ubuntu-image/x86-ubuntu", root_partition="1"),
-        readfile_contents=command,
+        #        readfile_contents=command,
 )
 
 
