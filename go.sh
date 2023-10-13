@@ -15,6 +15,10 @@ build_m5() {
   docker run --rm -itv $BASE:/mnt -w /mnt/gem5/util/m5 $CONTAINER scons ./build/x86/out/m5 -j`nproc`
 }
 
+build_m5term() {
+  docker run --rm -itv $BASE:/mnt -w /mnt/gem5/util/term $CONTAINER make
+}
+
 build_disk() {
   DISK_DIR=$BASE/disk-image/x86-ubuntu/x86-ubuntu-image
   [[ -d $DISK_DIR ]] && rm -rf $DISK_DIR
@@ -37,6 +41,7 @@ all() {
   build_container
   build_gem5
   build_m5
+  build_m5term
   build_disk
   run
 }
