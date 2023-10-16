@@ -32,7 +32,7 @@ run() {
   tmux kill-session -t $NAME;
   tmux new-session -d -s $NAME;
   tmux split-window -h -t $NAME:0.0;
-  tmux send-keys -t $NAME:0.0 \"/mnt/gem5/build/X86/gem5.opt --debug-flags CxlMemory x86-ubuntu-run-cxl-kvm.py\" Enter;
+  tmux send-keys -t $NAME:0.0 \"/mnt/gem5/build/X86/gem5.opt --debug-flags CxlController,CxlMemory x86-ubuntu-run-cxl-kvm.py\" Enter;
   tmux send-keys -t $NAME:0.1 \"while true; do $CMD; sleep 1; done\" Enter;
   tmux attach-session -t $NAME;"
 }
