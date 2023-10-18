@@ -100,7 +100,6 @@ board = X86Board(
 # has ended you may inspect `m5out/system.pc.com_1.device` to see the echo
 # output.
 #command = (
-#    "setpci -s 00:06.0 COMMAND=0x2;"
 #    + "/home/gem5/experiments/test;"
 #    + "sleep 1;"
 #    + "m5 exit;"
